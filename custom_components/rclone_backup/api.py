@@ -356,7 +356,9 @@ class RcloneApiClient:
                     on_progress(bytes_uploaded=uploaded)
                 yield chunk
 
-        timeout = aiohttp.ClientTimeout(total=UPLOAD_TIMEOUT_SECONDS, sock_read=300)
+        timeout = aiohttp.ClientTimeout(
+            total=UPLOAD_TIMEOUT_SECONDS, sock_connect=30, sock_read=300
+        )
         put_headers = {"Content-Type": "application/octet-stream"}
         if self._auth_header:
             put_headers["Authorization"] = self._auth_header
@@ -387,7 +389,9 @@ class RcloneApiClient:
     async def async_open_download_stream(self, filename: str) -> AsyncIterator[bytes]:
         """Open a streamed GET response and return an AsyncIterator[bytes]."""
         url = self._webdav_url(filename)
-        timeout = aiohttp.ClientTimeout(total=UPLOAD_TIMEOUT_SECONDS, sock_read=300)
+        timeout = aiohttp.ClientTimeout(
+            total=UPLOAD_TIMEOUT_SECONDS, sock_connect=30, sock_read=300
+        )
         get_headers = (
             {"Authorization": self._auth_header} if self._auth_header else None
         )
