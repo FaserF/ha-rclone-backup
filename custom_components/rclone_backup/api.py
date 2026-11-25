@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import posixpath
+import re
 import xml.etree.ElementTree as ET
 from collections.abc import AsyncIterator, Callable, Coroutine
 from typing import Any
@@ -435,6 +436,9 @@ def _parse_propfind_files(xml_bytes: bytes, target_dir: str) -> dict[str, int]:
     """Safely parse WebDAV PROPFIND multistatus XML without DTD/entity expansion."""
     if b"<!DOCTYPE" in xml_bytes or b"<!ENTITY" in xml_bytes:
         raise RcloneConnectionError("Rejected unsafe XML payload from WebDAV server")
+    end_match = re.search(rb"</(?:[A-Za-z0-9_-]+:)?multistatus>", xml_bytes)
+    if end_match is not None:
+        xml_bytes = xml_bytes[: end_match.end()]
     try:
         root = ET.fromstring(xml_bytes)  # noqa: S314
     except ET.ParseError as exc:

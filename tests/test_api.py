@@ -37,6 +37,19 @@ def test_parse_propfind_files_filters_collections() -> None:
     assert parsed == {"Test Backup.tar": 4096}
 
 
+def test_parse_propfind_trailing_rclone_error() -> None:
+    """Handle rclone serve webdav trailing Internal Server Error after </multistatus>."""
+    xml = (
+        b'<?xml version="1.0" encoding="UTF-8"?>'
+        b'<D:multistatus xmlns:D="DAV:">'
+        b"<D:response><D:href>/backups/homeassistant/a.tar</D:href>"
+        b"<D:propstat><D:prop><D:resourcetype/><D:getcontentlength>123</D:getcontentlength>"
+        b"</D:prop></D:propstat></D:response>"
+        b"</D:multistatus>Internal Server Error"
+    )
+    assert _parse_propfind_files(xml, "/backups/homeassistant") == {"a.tar": 123}
+
+
 def test_parse_propfind_rejects_doctype() -> None:
     """Reject DTD/ENTITY payloads to prevent XML entity expansion."""
     unsafe = b'<?xml version="1.0"?><!DOCTYPE foo [<!ENTITY bar "baz">]><D:multistatus xmlns:D="DAV:"/>'
