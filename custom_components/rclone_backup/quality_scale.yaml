@@ -1,0 +1,56 @@
+rules:
+  action-exceptions: done
+  appropriate-polling: done
+  async-dependency: done
+  brands:
+    status: todo
+    comment: Brand icons can be submitted to home-assistant/brands when publishing to core.
+  common-modules: done
+  config-flow: done
+  config-flow-test-coverage: done
+  dependency-transparency: done
+  diagnostics: done
+  discovery:
+    status: exempt
+    comment: User-configured tailnet/remote WebDAV & Rclone RC endpoint URL.
+  discovery-update-info:
+    status: exempt
+    comment: Cloud/tailnet service configured by explicit URL.
+  docs-actions: done
+  docs-configuration-parameters: done
+  docs-data-update: done
+  docs-examples: done
+  docs-high-level-description: done
+  docs-installation-instructions: done
+  docs-known-limitations: done
+  docs-removal-instructions: done
+  docs-supported-devices: done
+  docs-troubleshooting: done
+  docs-use-cases: done
+  dynamic-devices:
+    status: exempt
+    comment: Single logical storage pool endpoint per config entry.
+  entity-category: done
+  entity-device-class: done
+  entity-disabled-by-default: done
+  entity-translations: done
+  entity-unavailable: done
+  exception-translations: done
+  has-entity-name: done
+  icon-translations: done
+  inject-websession: done
+  integration-owner: done
+  log-when-unavailable: done
+  parallel-updates: done
+  reauthentication-flow: done
+  reconfiguration-flow: done
+  repair-issues: done
+  runtime-data: done
+  session-timeout: done
+  stale-devices:
+    status: exempt
+    comment: One hub device per config entry.
+  strict-typing: done
+  test-coverage: done
+  unique-config-entry: done
+  unloading: done

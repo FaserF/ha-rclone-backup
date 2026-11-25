@@ -1,0 +1,58 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "connectivity": {
+        "default": "mdi:cloud-check",
+        "state": {
+          "off": "mdi:cloud-off-outline"
+        }
+      },
+      "low_space": {
+        "default": "mdi:harddisk",
+        "state": {
+          "on": "mdi:alert-circle"
+        }
+      }
+    },
+    "button": {
+      "refresh": {
+        "default": "mdi:refresh"
+      }
+    },
+    "sensor": {
+      "status": {
+        "default": "mdi:cloud-lock",
+        "state": {
+          "low_space": "mdi:cloud-alert",
+          "unavailable": "mdi:cloud-off"
+        }
+      },
+      "storage_total": {
+        "default": "mdi:database"
+      },
+      "storage_used": {
+        "default": "mdi:database-arrow-up"
+      },
+      "storage_free": {
+        "default": "mdi:database-check"
+      },
+      "storage_trashed": {
+        "default": "mdi:trash-can-outline"
+      },
+      "storage_free_percent": {
+        "default": "mdi:chart-donut"
+      },
+      "backups_size": {
+        "default": "mdi:folder-zip"
+      },
+      "backups_count": {
+        "default": "mdi:counter"
+      }
+    }
+  },
+  "services": {
+    "refresh": {
+      "service": "mdi:refresh"
+    }
+  }
+}

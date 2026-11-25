@@ -1,0 +1,14 @@
+{
+  "domain": "rclone_backup",
+  "name": "Rclone Backup",
+  "codeowners": ["@FaserF"],
+  "config_flow": true,
+  "dependencies": ["backup"],
+  "documentation": "https://github.com/FaserF/ha-rclone-backup",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/FaserF/ha-rclone-backup/issues",
+  "quality_scale": "platinum",
+  "requirements": [],
+  "version": "0.1.0"
+}

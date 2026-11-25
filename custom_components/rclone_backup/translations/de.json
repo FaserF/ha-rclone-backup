@@ -1,0 +1,149 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Rclone WebDAV & RC Backup-Pool verbinden",
+        "description": "Konfiguriert einen authentifizierten Rclone WebDAV-Endpunkt mit optionaler Rclone RC API-Speicherplatzabfrage.",
+        "data": {
+          "name": "Name",
+          "url": "Server-URL",
+          "username": "Benutzername",
+          "password": "Passwort",
+          "backup_path": "Backup-Verzeichnispfad",
+          "rc_enabled": "Rclone RC Quota- & Versions-API aktivieren",
+          "rc_path": "Rclone RC-Pfadpräfix",
+          "verify_ssl": "TLS-Zertifikat prüfen"
+        },
+        "data_description": {
+          "url": "Basis-HTTPS- oder HTTP-URL (z. B. https://rclone-backup.tailnet.fabiseitz.de)",
+          "backup_path": "Unterordner im WebDAV-Remote für Home Assistant Backups",
+          "rc_path": "URL-Präfix für Rclone RC-Endpunkte (z. B. /rc)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Rclone Backup neu authentifizieren",
+        "description": "Zugangsdaten für {url} aktualisieren.",
+        "data": {
+          "username": "Benutzername",
+          "password": "Passwort",
+          "verify_ssl": "TLS-Zertifikat prüfen"
+        }
+      },
+      "reconfigure": {
+        "title": "Rclone Backup neu konfigurieren",
+        "description": "Verbindungseinstellungen für Rclone WebDAV & RC aktualisieren.",
+        "data": {
+          "name": "Name",
+          "url": "Server-URL",
+          "username": "Benutzername",
+          "password": "Passwort",
+          "backup_path": "Backup-Verzeichnispfad",
+          "rc_enabled": "Rclone RC Quota- & Versions-API aktivieren",
+          "rc_path": "Rclone RC-Pfadpräfix",
+          "verify_ssl": "TLS-Zertifikat prüfen"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zum Rclone-Endpunkt fehlgeschlagen",
+      "invalid_auth": "Ungültiger Benutzername oder Passwort",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "abort": {
+      "already_configured": "Dieser Rclone-Endpunkt und Pfad sind bereits konfiguriert",
+      "reauth_successful": "Erneute Authentifizierung erfolgreich",
+      "reconfigure_successful": "Neukonfiguration erfolgreich",
+      "unique_id_mismatch": "Ziel-URL und Backup-Pfad müssen zum bestehenden Eintrag passen"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Rclone Backup Optionen",
+        "data": {
+          "scan_interval": "Abfrageintervall für Quota & Backups (Sekunden)",
+          "low_space_threshold": "Warnschwelle für wenig freien Speicher (%)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Verbindung"
+      },
+      "low_space": {
+        "name": "Wenig Speicherplatz"
+      }
+    },
+    "button": {
+      "refresh": {
+        "name": "Status aktualisieren"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "Pool-Status",
+        "state": {
+          "connected": "Verbunden",
+          "low_space": "Wenig Speicher",
+          "unavailable": "Nicht erreichbar"
+        }
+      },
+      "storage_total": {
+        "name": "Speicherkapazität"
+      },
+      "storage_used": {
+        "name": "Speicher belegt"
+      },
+      "storage_free": {
+        "name": "Speicher frei"
+      },
+      "storage_trashed": {
+        "name": "Papierkorb"
+      },
+      "storage_free_percent": {
+        "name": "Freier Speicheranteil"
+      },
+      "backups_size": {
+        "name": "Größe aller Backups"
+      },
+      "backups_count": {
+        "name": "Anzahl Backups"
+      }
+    }
+  },
+  "exceptions": {
+    "auth_failed": {
+      "message": "Authentifizierung am Rclone-Endpunkt {url} fehlgeschlagen"
+    },
+    "connection_failed": {
+      "message": "Kommunikation mit Rclone-Endpunkt fehlgeschlagen: {error}"
+    },
+    "entry_not_found": {
+      "message": "Rclone Backup Konfigurationseintrag {entry_id} nicht gefunden"
+    }
+  },
+  "issues": {
+    "connection_failed": {
+      "title": "Rclone Backup nicht erreichbar ({name})",
+      "description": "Home Assistant konnte nicht mit dem Rclone Backup-Endpunkt ({name}) kommunizieren: {error}"
+    },
+    "low_storage": {
+      "title": "Wenig Speicher im Rclone-Pool ({name})",
+      "description": "Der Rclone-Speicherpool {name} hat nur noch {free_percent}% freien Speicher (unter dem Schwellwert von {threshold}%)."
+    }
+  },
+  "services": {
+    "refresh": {
+      "name": "Backup-Status aktualisieren",
+      "description": "Speicherplatz-Quota und Remote-Backup-Liste sofort aktualisieren.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Konfigurationseintrag",
+          "description": "Optionaler spezifischer Rclone Backup-Eintrag."
+        }
+      }
+    }
+  }
+}

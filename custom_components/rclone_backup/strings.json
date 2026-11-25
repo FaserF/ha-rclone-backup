@@ -1,0 +1,149 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect Rclone WebDAV & RC Backup Pool",
+        "description": "Configure an authenticated Rclone WebDAV endpoint with optional Rclone RC API quota reporting.",
+        "data": {
+          "name": "Name",
+          "url": "Server URL",
+          "username": "Username",
+          "password": "Password",
+          "backup_path": "Backup Directory Path",
+          "rc_enabled": "Enable Rclone RC Quota & Version API",
+          "rc_path": "Rclone RC Path Prefix",
+          "verify_ssl": "Verify TLS Certificate"
+        },
+        "data_description": {
+          "url": "Base HTTPS or HTTP URL (e.g. https://rclone-backup.tailnet.fabiseitz.de)",
+          "backup_path": "Subfolder inside the WebDAV remote for Home Assistant backups",
+          "rc_path": "URL prefix proxying Rclone RC endpoints (e.g. /rc)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Reauthenticate Rclone Backup",
+        "description": "Update credentials for {url}.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "verify_ssl": "Verify TLS Certificate"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Rclone Backup",
+        "description": "Update Rclone WebDAV & RC connection settings.",
+        "data": {
+          "name": "Name",
+          "url": "Server URL",
+          "username": "Username",
+          "password": "Password",
+          "backup_path": "Backup Directory Path",
+          "rc_enabled": "Enable Rclone RC Quota & Version API",
+          "rc_path": "Rclone RC Path Prefix",
+          "verify_ssl": "Verify TLS Certificate"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the Rclone endpoint",
+      "invalid_auth": "Invalid username or password",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This Rclone endpoint and path are already configured",
+      "reauth_successful": "Reauthentication succeeded",
+      "reconfigure_successful": "Reconfiguration succeeded",
+      "unique_id_mismatch": "The target endpoint URL and backup path must match the existing entry"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Rclone Backup Options",
+        "data": {
+          "scan_interval": "Quota & Inventory Poll Interval (seconds)",
+          "low_space_threshold": "Low Free Space Warning Threshold (%)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Connection"
+      },
+      "low_space": {
+        "name": "Low storage space"
+      }
+    },
+    "button": {
+      "refresh": {
+        "name": "Refresh status"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "Pool status",
+        "state": {
+          "connected": "Connected",
+          "low_space": "Low space",
+          "unavailable": "Unavailable"
+        }
+      },
+      "storage_total": {
+        "name": "Storage capacity"
+      },
+      "storage_used": {
+        "name": "Storage used"
+      },
+      "storage_free": {
+        "name": "Storage free"
+      },
+      "storage_trashed": {
+        "name": "Storage trashed"
+      },
+      "storage_free_percent": {
+        "name": "Storage free percentage"
+      },
+      "backups_size": {
+        "name": "Backups total size"
+      },
+      "backups_count": {
+        "name": "Backups count"
+      }
+    }
+  },
+  "exceptions": {
+    "auth_failed": {
+      "message": "Authentication failed connecting to Rclone endpoint {url}"
+    },
+    "connection_failed": {
+      "message": "Rclone endpoint communication failed: {error}"
+    },
+    "entry_not_found": {
+      "message": "Rclone Backup config entry {entry_id} not found"
+    }
+  },
+  "issues": {
+    "connection_failed": {
+      "title": "Rclone Backup unreachable ({name})",
+      "description": "Home Assistant could not communicate with the Rclone Backup endpoint ({name}): {error}"
+    },
+    "low_storage": {
+      "title": "Low Rclone pool storage ({name})",
+      "description": "Rclone storage pool {name} has only {free_percent}% free space remaining (below {threshold}% threshold)."
+    }
+  },
+  "services": {
+    "refresh": {
+      "name": "Refresh backup status",
+      "description": "Immediately refresh Rclone pool quota and remote backup inventory.",
+      "fields": {
+        "config_entry_id": {
+          "name": "Config entry",
+          "description": "Optional specific Rclone Backup entry to refresh."
+        }
+      }
+    }
+  }
+}
