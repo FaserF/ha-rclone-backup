@@ -32,12 +32,14 @@ from .const import (
     CONF_LOW_SPACE_THRESHOLD,
     CONF_RC_ENABLED,
     CONF_RC_PATH,
+    CONF_REMOTE_NAME,
     CONF_SCAN_INTERVAL,
     DEFAULT_BACKUP_PATH,
     DEFAULT_LOW_SPACE_THRESHOLD,
     DEFAULT_NAME,
     DEFAULT_RC_ENABLED,
     DEFAULT_RC_PATH,
+    DEFAULT_REMOTE_NAME,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_VERIFY_SSL,
     DOMAIN,
@@ -64,6 +66,10 @@ def _build_user_schema(defaults: Mapping[str, Any] | None = None) -> vol.Schema:
             ): bool,
             vol.Optional(
                 CONF_RC_PATH, default=src.get(CONF_RC_PATH, DEFAULT_RC_PATH)
+            ): str,
+            vol.Optional(
+                CONF_REMOTE_NAME,
+                default=src.get(CONF_REMOTE_NAME, DEFAULT_REMOTE_NAME),
             ): str,
             vol.Required(
                 CONF_VERIFY_SSL,
@@ -103,6 +109,7 @@ class RcloneBackupConfigFlow(ConfigFlow, domain=DOMAIN):
             backup_path=user_input.get(CONF_BACKUP_PATH, DEFAULT_BACKUP_PATH),
             rc_enabled=bool(user_input.get(CONF_RC_ENABLED, DEFAULT_RC_ENABLED)),
             rc_path=user_input.get(CONF_RC_PATH, DEFAULT_RC_PATH),
+            remote_name=str(user_input.get(CONF_REMOTE_NAME, DEFAULT_REMOTE_NAME)),
         )
         await client.async_check_connection()
 

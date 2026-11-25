@@ -16,6 +16,7 @@ ATTRIBUTION: Final = "Data provided by Rclone WebDAV & RC API"
 CONF_BACKUP_PATH: Final = "backup_path"
 CONF_RC_ENABLED: Final = "rc_enabled"
 CONF_RC_PATH: Final = "rc_path"
+CONF_REMOTE_NAME: Final = "remote_name"
 CONF_LOW_SPACE_THRESHOLD: Final = "low_space_threshold"
 CONF_SCAN_INTERVAL: Final = "scan_interval"
 
@@ -23,6 +24,7 @@ DEFAULT_NAME: Final = "Rclone Backup"
 DEFAULT_BACKUP_PATH: Final = "/backups/homeassistant"
 DEFAULT_RC_ENABLED: Final = True
 DEFAULT_RC_PATH: Final = "/rc"
+DEFAULT_REMOTE_NAME: Final = ""
 DEFAULT_VERIFY_SSL: Final = True
 DEFAULT_SCAN_INTERVAL: Final = 300
 DEFAULT_LOW_SPACE_THRESHOLD: Final = 10

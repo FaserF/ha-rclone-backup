@@ -97,6 +97,31 @@ async def test_api_client_operations(
         await api.async_read_text("missing.tar")
 
     aioclient_mock.clear_requests()
+    aioclient_mock.post(f"{base}/rc/operations/about", status=400)
+    aioclient_mock.post(
+        f"{base}/rc/config/listremotes",
+        json={"remotes": ["cloud_pool_crypt"]},
+    )
+    assert await api.async_get_quota() is None
+
+    explicit_api = RcloneApiClient(
+        async_get_clientsession(hass),
+        base,
+        username="ha",
+        password="pw",
+        backup_path="/backups/ha",
+        remote_name="cloud_pool_crypt:",
+    )
+    aioclient_mock.clear_requests()
+    aioclient_mock.post(
+        f"{base}/rc/operations/about",
+        json={"total": 2000, "used": 500, "free": 1500, "trashed": 0},
+    )
+    explicit_quota = await explicit_api.async_get_quota()
+    assert explicit_quota is not None
+    assert explicit_quota.total == 2000
+
+    aioclient_mock.clear_requests()
     aioclient_mock.post(f"{base}/rc/operations/about", status=401)
     with pytest.raises(RcloneAuthError):
         await api.async_get_quota()

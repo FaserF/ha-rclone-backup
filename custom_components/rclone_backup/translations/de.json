@@ -12,12 +12,14 @@
           "backup_path": "Backup-Verzeichnispfad",
           "rc_enabled": "Rclone RC Quota- & Versions-API aktivieren",
           "rc_path": "Rclone RC-Pfadpräfix",
+          "remote_name": "Rclone Remote-Name (optional)",
           "verify_ssl": "TLS-Zertifikat prüfen"
         },
         "data_description": {
           "url": "Basis-HTTPS- oder HTTP-Server-URL ohne abschließenden Schrägstrich",
           "backup_path": "Unterordner im WebDAV-Remote für Home Assistant Backups",
-          "rc_path": "URL-Präfix für Rclone RC-Endpunkte (z. B. /rc)"
+          "rc_path": "URL-Präfix für Rclone RC-Endpunkte (z. B. /rc)",
+          "remote_name": "Optionales RC fs-Ziel für Speicherplatz-Quota (z. B. cloud_pool_crypt:); wird sonst automatisch erkannt"
         }
       },
       "reauth_confirm": {
@@ -40,6 +42,7 @@
           "backup_path": "Backup-Verzeichnispfad",
           "rc_enabled": "Rclone RC Quota- & Versions-API aktivieren",
           "rc_path": "Rclone RC-Pfadpräfix",
+          "remote_name": "Rclone Remote-Name (optional)",
           "verify_ssl": "TLS-Zertifikat prüfen"
         }
       }

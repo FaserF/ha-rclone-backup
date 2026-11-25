@@ -20,10 +20,12 @@ from .const import (
     CONF_BACKUP_PATH,
     CONF_RC_ENABLED,
     CONF_RC_PATH,
+    CONF_REMOTE_NAME,
     DATA_COORDINATOR_MAP,
     DEFAULT_BACKUP_PATH,
     DEFAULT_RC_ENABLED,
     DEFAULT_RC_PATH,
+    DEFAULT_REMOTE_NAME,
     DEFAULT_VERIFY_SSL,
     DOMAIN,
 )
@@ -60,6 +62,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: RcloneConfigEntry) -> bo
         backup_path=entry.data.get(CONF_BACKUP_PATH, DEFAULT_BACKUP_PATH),
         rc_enabled=bool(entry.data.get(CONF_RC_ENABLED, DEFAULT_RC_ENABLED)),
         rc_path=entry.data.get(CONF_RC_PATH, DEFAULT_RC_PATH),
+        remote_name=str(entry.data.get(CONF_REMOTE_NAME, DEFAULT_REMOTE_NAME)),
     )
 
     coordinator = RcloneBackupCoordinator(hass, entry, client)

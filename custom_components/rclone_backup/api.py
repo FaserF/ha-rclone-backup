@@ -83,6 +83,7 @@ class RcloneApiClient:
         backup_path: str = "/backups/homeassistant",
         rc_enabled: bool = True,
         rc_path: str = "/rc",
+        remote_name: str = "",
     ) -> None:
         """Initialize the Rclone client."""
         self._session = session
@@ -90,6 +91,8 @@ class RcloneApiClient:
         self._backup_path = _normalize_subpath(backup_path)
         self._rc_enabled = rc_enabled
         self._rc_prefix = _normalize_rc_prefix(rc_path)
+        self._remote_name = remote_name.strip()
+        self._resolved_remote: str | None = None
         self._auth_header: str | None = None
         if username:
             token = base64.b64encode(f"{username}:{password or ''}".encode()).decode(
@@ -197,14 +200,55 @@ class RcloneApiClient:
             return None
         return await self.async_get_quota()
 
+    async def _resolve_rc_fs(self) -> str | None:
+        if self._remote_name:
+            return (
+                self._remote_name
+                if self._remote_name.endswith(":")
+                else f"{self._remote_name}:"
+            )
+        if self._resolved_remote:
+            return self._resolved_remote
+        status, _, body = await self._request(
+            "POST", self._rc_url("config/listremotes"), json_body={}
+        )
+        if status != 200:
+            return None
+        try:
+            import json
+
+            remotes = json.loads(body.decode("utf-8")).get("remotes") or []
+            if remotes:
+                first = str(remotes[0])
+                self._resolved_remote = first if first.endswith(":") else f"{first}:"
+                return self._resolved_remote
+        except (ValueError, UnicodeDecodeError):
+            return None
+        return None
+
     async def async_get_quota(self) -> RcloneQuotaData | None:
         """Query Rclone RC `/operations/about` JSON API for pool quota metrics."""
         if not self._rc_enabled:
             return None
-        status, _, body = await self._request(
-            "POST", self._rc_url("operations/about"), json_body={}
+
+        target_fs = self._remote_name or self._resolved_remote or ""
+        req_body: dict[str, Any] = (
+            {"fs": target_fs if target_fs.endswith(":") else f"{target_fs}:"}
+            if target_fs
+            else {}
         )
-        if status in (404, 405, 501):
+        status, _, body = await self._request(
+            "POST", self._rc_url("operations/about"), json_body=req_body
+        )
+        if status == 400 and not target_fs:
+            discovered = await self._resolve_rc_fs()
+            if discovered:
+                status, _, body = await self._request(
+                    "POST",
+                    self._rc_url("operations/about"),
+                    json_body={"fs": discovered},
+                )
+        if status in (400, 404, 405, 501):
             return None
         if status >= 400:
             raise RcloneConnectionError(
