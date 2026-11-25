@@ -15,7 +15,7 @@
           "verify_ssl": "Verify TLS Certificate"
         },
         "data_description": {
-          "url": "Base HTTPS or HTTP URL (e.g. https://rclone-backup.tailnet.fabiseitz.de)",
+          "url": "Base HTTPS or HTTP server URL without trailing slash",
           "backup_path": "Subfolder inside the WebDAV remote for Home Assistant backups",
           "rc_path": "URL prefix proxying Rclone RC endpoints (e.g. /rc)"
         }

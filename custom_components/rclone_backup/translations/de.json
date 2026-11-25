@@ -15,7 +15,7 @@
           "verify_ssl": "TLS-Zertifikat prüfen"
         },
         "data_description": {
-          "url": "Basis-HTTPS- oder HTTP-URL (z. B. https://rclone-backup.tailnet.fabiseitz.de)",
+          "url": "Basis-HTTPS- oder HTTP-Server-URL ohne abschließenden Schrägstrich",
           "backup_path": "Unterordner im WebDAV-Remote für Home Assistant Backups",
           "rc_path": "URL-Präfix für Rclone RC-Endpunkte (z. B. /rc)"
         }
