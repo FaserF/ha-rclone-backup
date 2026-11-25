@@ -80,7 +80,8 @@ class RcloneBackupAgent(BackupAgent):
         **kwargs: Any,
     ) -> None:
         """Stream backup archive and sidecar metadata to Rclone WebDAV."""
-        base_name = suggested_filename(backup)
+        raw_name = suggested_filename(backup)
+        base_name = raw_name.removesuffix(".tar")
         tar_name = f"{base_name}.tar"
         meta_name = f"{base_name}.metadata.json"
         meta_bytes = json.dumps(backup.as_dict()).encode("utf-8")

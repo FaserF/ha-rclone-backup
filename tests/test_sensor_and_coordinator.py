@@ -39,7 +39,7 @@ async def test_sensors_diagnostics_repairs_and_button(
         protected=True,
         size=1048576,
     )
-    base = suggested_filename(backup)
+    base = suggested_filename(backup).removesuffix(".tar")
     mock_rclone_client.async_list_files = AsyncMock(
         return_value={f"{base}.tar": 1048576, f"{base}.metadata.json": 256}
     )

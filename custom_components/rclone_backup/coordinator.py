@@ -97,7 +97,9 @@ class RcloneBackupCoordinator(DataUpdateCoordinator[RcloneStatusData]):
         for meta_name in sorted(meta_files):
             base_name = meta_name.removesuffix(".metadata.json")
             tar_name = f"{base_name}.tar"
-            if tar_name not in files:
+            if tar_name not in files and base_name in files:
+                tar_name = base_name
+            elif tar_name not in files:
                 continue
 
             cached = by_meta_name.get(meta_name)

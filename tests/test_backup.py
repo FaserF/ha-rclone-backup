@@ -63,7 +63,7 @@ async def test_backup_agent_upload_list_download_delete(
     assert agent.agent_id == f"rclone_backup.{mock_config_entry.entry_id}"
 
     backup = _make_backup("deadbeef")
-    base = suggested_filename(backup)
+    base = suggested_filename(backup).removesuffix(".tar")
     tar_name = f"{base}.tar"
     meta_name = f"{base}.metadata.json"
 
