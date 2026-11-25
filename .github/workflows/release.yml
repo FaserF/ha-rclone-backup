@@ -6,10 +6,58 @@ on:
       - "v*"
   workflow_dispatch:
     inputs:
-      tag_name:
-        description: "Release tag (e.g. v1.0.0)"
+      channel:
+        description: "Release channel (stable, beta, nightly)"
         required: true
-        default: "v1.0.0"
+        default: "stable"
+        type: choice
+        options:
+          - stable
+          - beta
+          - nightly
+      bump_level:
+        description: "SemVer increment level (patch, minor, major)"
+        required: true
+        default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      version_override:
+        description: "Force explicit version (e.g. 1.2.3 or 2026.11.0b1; overrides auto bump)"
+        required: false
+        default: ""
+        type: string
+      re_release:
+        description: "Re-release / update existing tag & GitHub release without bumping version"
+        required: false
+        default: false
+        type: boolean
+      prerelease:
+        description: "Prerelease override (auto, true, false)"
+        required: false
+        default: "auto"
+        type: choice
+        options:
+          - auto
+          - "true"
+          - "false"
+      draft:
+        description: "Create as draft release"
+        required: false
+        default: false
+        type: boolean
+      custom_message:
+        description: "Optional highlight note prepended to release changelog"
+        required: false
+        default: ""
+        type: string
+      post_dev_bump:
+        description: "Bump files to next -dev0 after stable release"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -18,5 +66,13 @@ jobs:
   release:
     uses: FaserF/repo-template/.github/workflows/reusable-release.yml@v1
     with:
-      tag_name: ${{ inputs.tag_name }}
+      tag_name: ${{ github.event_name == 'push' && github.ref_name || '' }}
+      channel: ${{ github.event_name == 'workflow_dispatch' && inputs.channel || 'stable' }}
+      bump_level: ${{ github.event_name == 'workflow_dispatch' && inputs.bump_level || 'patch' }}
+      version_override: ${{ github.event_name == 'workflow_dispatch' && inputs.version_override || '' }}
+      re_release: ${{ github.event_name == 'workflow_dispatch' && inputs.re_release || false }}
+      prerelease: ${{ github.event_name == 'workflow_dispatch' && inputs.prerelease || 'auto' }}
+      draft: ${{ github.event_name == 'workflow_dispatch' && inputs.draft || false }}
+      custom_message: ${{ github.event_name == 'workflow_dispatch' && inputs.custom_message || '' }}
+      post_dev_bump: ${{ github.event_name == 'workflow_dispatch' && inputs.post_dev_bump || false }}
     secrets: inherit
