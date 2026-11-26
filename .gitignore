@@ -6,3 +6,9 @@ __pycache__/
 .coverage
 htmlcov/
 .venv/
+
+# Security: credentials and environment files
+.env
+.env.local
+*.pem
+*.key
